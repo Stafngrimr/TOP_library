@@ -1,8 +1,8 @@
 // Book Library app
 
 // TODO:
-// 1. When clicking submit, clear the forms fields, and re-autofocus the title input.
-// 2. When you've clicked submit once, you can do it again and the forms are able to be posted empty.
+// 1. When clicking submit, clear the form fields, and re-autofocus the title input.
+// 2. Required doesn't work without form, how else do you do that? Do we put form back in?
 // 3. Put the submission form on the right side of the screen.
 
 // Example book creations
@@ -33,6 +33,10 @@ function addBooktoLibrary() {
 	showBook(newBook);
 	newTitle.value = "";
 }
+
+function fieldEmpty() (
+
+)
 
 submit.addEventListener("click", addBooktoLibrary);
 
