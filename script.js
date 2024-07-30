@@ -5,8 +5,6 @@ let newTitle = document.querySelector("#title");
 let newAuthor = document.querySelector("#author");
 let newPages = document.querySelector("#pages");
 let newRead = document.querySelector("#read");
-let sumbit = document.querySelector("#submit");
-const containerDiv = document.querySelector("div#book-container");
 
 function Book(title, author, pages, read) {
 	this.title = title;
@@ -37,7 +35,7 @@ function removeBookFromArr() {
 }
 
 submit.addEventListener("click", addBooktoArr);
-// submit.addEventListener("click", removeBookFromArr);
+// TODO submit.addEventListener("click", removeBookFromArr);
 
 function showLibrary(library) {
 	// Clear current library
@@ -79,7 +77,7 @@ function showLibrary(library) {
 		}
 
 		// Put them together
-		containerDiv.appendChild(div);
+		cont.appendChild(div);
 		div.appendChild(table);
 
 		table.appendChild(rowTitle);
@@ -97,5 +95,7 @@ function showLibrary(library) {
 		table.appendChild(rowStatus);
 		rowStatus.appendChild(headStatus);
 		rowStatus.appendChild(cellStatus);
+
+		// TODO Add in delete button, and (not) Read button
 		}
 	}
