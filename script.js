@@ -1,23 +1,12 @@
 // Book Library app
 
-// TODO:
-// 1. When clicking submit, clear the form fields, and re-autofocus the title input.
-// 2. Required doesn't work without form, how else do you do that? Do we put form back in?
-// 3. Put the submission form on the right side of the screen.
-
-// Example book creations
-const monaLisa = new Book("Mona Lisa Overdrive", "William Gibson", 251, false);
-
-// Library declaration
-const myLib = [monaLisa];
-
 // Form declarations
 let newTitle = document.querySelector("#title");
 let newAuthor = document.querySelector("#author");
 let newPages = document.querySelector("#pages");
 let newRead = document.querySelector("#read");
-let newISBN = document.querySelector("#isbn");
 let sumbit = document.querySelector("#submit");
+const containerDiv = document.querySelector("div#book-container");
 
 function Book(title, author, pages, read) {
 	this.title = title;
@@ -26,72 +15,87 @@ function Book(title, author, pages, read) {
 	this.hasRead = false;
 }
 
-function addBooktoLibrary() {
-	const newBook = new Book(newTitle, newAuthor, newPages, newRead);
+// Example book creation
+const monaLisa = new Book("Mona Lisa Overdrive", "William Gibson", 251);
+monaLisa.hasRead = false;
+
+// Library declaration
+const myLib = [monaLisa];
+showLibrary(myLib);
+
+// Book manip functions and calls
+function addBooktoArr() {
+	const newBook = new Book(newTitle.value, newAuthor.value, newPages.value);
+	newBook.hasRead = newRead.checked;
 	myLib.push(newBook);
-	console.log(newBook);
-	showBook(newBook);
-	newTitle.value = "";
+	event.preventDefault();
+	showLibrary(myLib);
 }
 
-function fieldEmpty() (
+function removeBookFromArr() {
+	// When we press the button remove the book from the arr
+}
 
-)
+submit.addEventListener("click", addBooktoArr);
+// submit.addEventListener("click", removeBookFromArr);
 
-submit.addEventListener("click", addBooktoLibrary);
+function showLibrary(library) {
+	// Clear current library
+	const cont = document.querySelector("#book-container");
+	cont.innerHTML = "";
+	
+	// Iterate through array to create books
+	for (let i=0;i<library.length;i++) {
+		const div = document.createElement("div");
+		div.classList.add("aBook");
+		div.setAttribute("data-id", i);
+		const table = document.createElement("table");
+		const rowTitle = document.createElement("tr");
+		const rowAuthor = document.createElement("tr");
+		const rowPages = document.createElement("tr");
+		const rowStatus = document.createElement("tr");
+		const headTitle = document.createElement("th");
+		const headAuthor = document.createElement("th");
+		const headPages = document.createElement("th");
+		const headStatus = document.createElement("th");
+		const cellTitle = document.createElement("td");
+		const cellAuthor = document.createElement("td");
+		const cellPages = document.createElement("td");
+		const cellStatus = document.createElement("td");
 
-const containerDiv = document.querySelector("div#book-container");
+		// Input data
+		headTitle.textContent = "Title";
+		headAuthor.textContent = "Author";
+		headPages.textContent = "Pages";
+		headStatus.textContent = "Status";
+		cellTitle.textContent = library[i].title;
+		cellAuthor.textContent = library[i].author;
+		cellPages.textContent = library[i].pages;
 
-function showBook(book) {
-	// Create pieces
-	const div = document.createElement("div");
-	div.classList.add("aBook");
-	const table = document.createElement("table");
-	const rowTitle = document.createElement("tr");
-	const rowAuthor = document.createElement("tr");
-	const rowPages = document.createElement("tr");
-	const rowStatus = document.createElement("tr");
-	const headTitle = document.createElement("th");
-	const headAuthor = document.createElement("th");
-	const headPages = document.createElement("th");
-	const headStatus = document.createElement("th");
-	const cellTitle = document.createElement("td");
-	const cellAuthor = document.createElement("td");
-	const cellPages = document.createElement("td");
-	const cellStatus = document.createElement("td");
+		if (library[i].hasRead === false) {
+			cellStatus.textContent = "Not yet";
+		} else {
+			cellStatus.textContent = "Read";
+		}
 
-	// Input data
-	headTitle.textContent = "Title";
-	headAuthor.textContent = "Author";
-	headPages.textContent = "Pages";
-	headStatus.textContent = "Status";
-	cellTitle.textContent = book.title.value;
-	cellAuthor.textContent = book.author.value;
-	cellPages.textContent = book.pages.value;
+		// Put them together
+		containerDiv.appendChild(div);
+		div.appendChild(table);
 
-	if (book.hasRead === false) {
-		cellStatus.textContent = "Not yet";
-	} else {
-		cellStatus.textContent = "Read";
+		table.appendChild(rowTitle);
+		rowTitle.appendChild(headTitle);
+		rowTitle.appendChild(cellTitle);
+
+		table.appendChild(rowAuthor);
+		rowAuthor.appendChild(headAuthor);
+		rowAuthor.appendChild(cellAuthor);
+
+		table.appendChild(rowPages);
+		rowPages.appendChild(headPages);
+		rowPages.appendChild(cellPages);
+
+		table.appendChild(rowStatus);
+		rowStatus.appendChild(headStatus);
+		rowStatus.appendChild(cellStatus);
+		}
 	}
-
-	// Put them together
-	containerDiv.appendChild(div);
-	div.appendChild(table);
-
-	table.appendChild(rowTitle);
-	rowTitle.appendChild(headTitle);
-	rowTitle.appendChild(cellTitle);
-
-	table.appendChild(rowAuthor);
-	rowAuthor.appendChild(headAuthor);
-	rowAuthor.appendChild(cellAuthor);
-
-	table.appendChild(rowPages);
-	rowPages.appendChild(headPages);
-	rowPages.appendChild(cellPages);
-
-	table.appendChild(rowStatus);
-	rowStatus.appendChild(headStatus);
-	rowStatus.appendChild(cellStatus);
-}

@@ -90,6 +90,4 @@ td {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
-	width: 75px;
-	padding: 5px;
 }
