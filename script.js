@@ -6,6 +6,7 @@ let newAuthor = document.querySelector("#author");
 let newPages = document.querySelector("#pages");
 let newRead = document.querySelector("#read");
 
+// Book constructor
 function Book(title, author, pages, read) {
 	this.title = title;
 	this.author = author;
@@ -13,11 +14,9 @@ function Book(title, author, pages, read) {
 	this.hasRead = false;
 }
 
-// Example book creation
 const monaLisa = new Book("Mona Lisa Overdrive", "William Gibson", 251);
 monaLisa.hasRead = false;
 
-// Library declaration
 const myLib = [monaLisa];
 showLibrary(myLib);
 
@@ -27,26 +26,45 @@ function addBooktoArr() {
 	newBook.hasRead = newRead.checked;
 	myLib.push(newBook);
 	event.preventDefault();
-	showLibrary(myLib);
+	showLibrary();
 }
+submit.addEventListener("click", addBooktoArr);
 
 function removeBookFromArr() {
 	// When we press the button remove the book from the arr
+	let delButtons = document.querySelectorAll(".buttonDel");
+	for (let i=0; i<delButtons.length;i++) {
+		delButtons[i].addEventListener("click", function() {
+			myLib.splice(i, 1);
+			showLibrary();
+		})
+	}
 }
 
-submit.addEventListener("click", addBooktoArr);
-// TODO submit.addEventListener("click", removeBookFromArr);
+function changeStatus() {
+	let readButtons = document.querySelectorAll(".buttonStatus");
+	for (let i=0;i<readButtons.length;i++) {
+		readButtons[i].addEventListener("click", function() {
+			if (myLib[i].hasRead === true) {
+				myLib[i].hasRead = false;
+			} else if (myLib[i].hasRead === false) {
+				myLib[i].hasRead = true;
+			}
+			showLibrary();
+		})
+	}
+}
 
-function showLibrary(library) {
+// Show/reload the library
+function showLibrary() {
 	// Clear current library
 	const cont = document.querySelector("#book-container");
 	cont.innerHTML = "";
 	
 	// Iterate through array to create books
-	for (let i=0;i<library.length;i++) {
+	for (let i=0;i<myLib.length;i++) {
 		const div = document.createElement("div");
 		div.classList.add("aBook");
-		div.setAttribute("data-id", i);
 		const table = document.createElement("table");
 		const rowTitle = document.createElement("tr");
 		const rowAuthor = document.createElement("tr");
@@ -66,11 +84,11 @@ function showLibrary(library) {
 		headAuthor.textContent = "Author";
 		headPages.textContent = "Pages";
 		headStatus.textContent = "Status";
-		cellTitle.textContent = library[i].title;
-		cellAuthor.textContent = library[i].author;
-		cellPages.textContent = library[i].pages;
+		cellTitle.textContent = myLib[i].title;
+		cellAuthor.textContent = myLib[i].author;
+		cellPages.textContent = myLib[i].pages;
 
-		if (library[i].hasRead === false) {
+		if (myLib[i].hasRead === false) {
 			cellStatus.textContent = "Not yet";
 		} else {
 			cellStatus.textContent = "Read";
@@ -96,6 +114,27 @@ function showLibrary(library) {
 		rowStatus.appendChild(headStatus);
 		rowStatus.appendChild(cellStatus);
 
-		// TODO Add in delete button, and (not) Read button
-		}
+		const rowButtons = document.createElement("tr");
+		const cellReadButton = document.createElement("td");
+		const cellDelButton = document.createElement("td");
+		const buttonRead = document.createElement("button");
+		const buttonDel = document.createElement("button");
+
+		buttonRead.classList.add("buttonStatus");
+		buttonDel.classList.add("buttonDel");
+		
+		table.appendChild(rowButtons);
+		rowButtons.appendChild(cellReadButton);
+		rowButtons.appendChild(cellDelButton);
+
+		cellReadButton.appendChild(buttonRead);
+		cellDelButton.appendChild(buttonDel);
+
+		buttonRead.textContent = "Change Status";
+		buttonDel.textContent = "Remove Book";
 	}
+
+	changeStatus();
+	removeBookFromArr();
+}
+	
