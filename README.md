@@ -6,3 +6,4 @@ A library application for The Odin Project.
 - link books to their isbn and show book cover.
 - save collection locally.
 
+- we're changing things to use classes instead.
